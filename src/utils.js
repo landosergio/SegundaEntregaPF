@@ -11,7 +11,7 @@ aparecía con las comillas escapadas y no se podía utilizar para navegar. Ej: h
 
 Para resolverlo, el filtro debe enviarse sin comillas. Las siguientes funciones transforman al string en un JSON con formato correcto
 buscando los índices de todos los ":" y "{" y agregando las comillas necesarias. Se pueden usar filtros complejos como {price:{$gt:2000}}
-y este se transformará en {"price":{"$gt":2000}} para realizar la búsqueda en Mongo.
+y este se convertirá en {"price":{"$gt":2000}} para realizar la búsqueda en Mongo.
 
 */
 
