@@ -55,10 +55,14 @@ class ProductManager {
       return error.message;
     }
 
+    if (page > productPagination.totalPages || page < 1 || isNaN(page)) {
+      return 0;
+    }
+
     let response = {
       status: "success",
       payload: productPagination.docs,
-      totalPages: productPagination,
+      totalPages: productPagination.totalPages,
       prevPage: productPagination.prevPage,
       nextPage: productPagination.nextPage,
       page: productPagination.page,

@@ -11,27 +11,32 @@ viewsRouter.get("/products", async (req, res) => {
 
   let response = await pManager.getProducts(limit, page, sort, query);
 
-  (response.prevLink =
-    response.hasPrevPage &&
-    `http://localhost:8080/products/?limit=${response.linkOptions.limit}${
-      (response.linkOptions.query && `&query=${response.linkOptions.query}`) ||
-      ""
-    }${
-      response.linkOptions.sort ? "&sort=" + response.linkOptions.sort : ""
-    }&page=${response.prevPage}`),
-    (response.nextLink =
-      response.hasNextPage &&
+  if (response) {
+    (response.prevLink =
+      response.hasPrevPage &&
       `http://localhost:8080/products/?limit=${response.linkOptions.limit}${
         (response.linkOptions.query &&
           `&query=${response.linkOptions.query}`) ||
         ""
       }${
         response.linkOptions.sort ? "&sort=" + response.linkOptions.sort : ""
-      }&page=${response.nextPage}`);
+      }&page=${response.prevPage}`),
+      (response.nextLink =
+        response.hasNextPage &&
+        `http://localhost:8080/products/?limit=${response.linkOptions.limit}${
+          (response.linkOptions.query &&
+            `&query=${response.linkOptions.query}`) ||
+          ""
+        }${
+          response.linkOptions.sort ? "&sort=" + response.linkOptions.sort : ""
+        }&page=${response.nextPage}`);
 
-  delete response.linkOptions;
+    delete response.linkOptions;
 
-  res.render("home", { response });
+    res.render("home", { response });
+  } else {
+    res.send("No existe la página");
+  }
 });
 
 viewsRouter.get("/carts/:cid", async (req, res) => {

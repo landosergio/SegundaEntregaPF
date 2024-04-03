@@ -9,27 +9,34 @@ productsRouter.get("/", async (req, res) => {
 
   let response = await manager.getProducts(limit, page, sort, query);
 
-  (response.prevLink =
-    response.hasPrevPage &&
-    `http://localhost:8080/api/products/?limit=${response.linkOptions.limit}${
-      (response.linkOptions.query && `&query=${response.linkOptions.query}`) ||
-      ""
-    }${
-      response.linkOptions.sort ? "&sort=" + response.linkOptions.sort : ""
-    }&page=${response.prevPage}`),
-    (response.nextLink =
-      response.hasNextPage &&
+  if (response) {
+    (response.prevLink =
+      response.hasPrevPage &&
       `http://localhost:8080/api/products/?limit=${response.linkOptions.limit}${
         (response.linkOptions.query &&
           `&query=${response.linkOptions.query}`) ||
         ""
       }${
         response.linkOptions.sort ? "&sort=" + response.linkOptions.sort : ""
-      }&page=${response.nextPage}`);
+      }&page=${response.prevPage}`),
+      (response.nextLink =
+        response.hasNextPage &&
+        `http://localhost:8080/api/products/?limit=${
+          response.linkOptions.limit
+        }${
+          (response.linkOptions.query &&
+            `&query=${response.linkOptions.query}`) ||
+          ""
+        }${
+          response.linkOptions.sort ? "&sort=" + response.linkOptions.sort : ""
+        }&page=${response.nextPage}`);
 
-  delete response.linkOptions;
+    delete response.linkOptions;
 
-  res.send(response);
+    res.send(response);
+  } else {
+    res.send("No existe la página");
+  }
 });
 
 productsRouter.get("/:pid", async (req, res) => {

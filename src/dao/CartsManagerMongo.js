@@ -2,15 +2,12 @@ import { CartModel } from "./models/Cart.model.js";
 
 class CartsManager {
   async addCart(cart) {
-    if (cart.products[0]) {
-      try {
-        await CartModel.create(cart);
-      } catch (error) {
-        console.log(error);
-      }
-      return "Se creó el carrito";
+    try {
+      await CartModel.create(cart);
+    } catch (error) {
+      console.log(error);
     }
-    return "Carrito vacío";
+    return "Se creó el carrito";
   }
 
   async getCartById(id) {
